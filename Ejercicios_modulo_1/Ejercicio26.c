@@ -13,8 +13,18 @@ Se pide calcular e informar:
 
 #include <stdio.h>
 
-int peso = 0, puerto, identificacion, pesoT = 0, mayorP = 0, contP = 0, cant1, cant2, cant3;
-// Declaro variables, bastantes variables
+struct Contenedor { // STRUCT.
+    int identificacion;
+    int peso;
+    int puerto;
+};
+
+struct Contenedor contenedor; // LLamo todas las variables del Struct y las pongo bajo el nombre contenedor.
+
+int pesoT = 0, mayorP = 0, contP = 0;
+int cant1 = 0, cant2 = 0, cant3 = 0;
+// Declaro variables!
+
 void main(void) 
 {
     printf("En este programa podras ingresar los datos de los 5 contenedores de carga que se transladan a tres diferentes puertos del pais.");
@@ -24,43 +34,49 @@ void main(void)
     {
         printf("\n\n    CONTENEDOR %d", i+1); // Enumero los contenedores
         
-        printf("\nIngrese la identificacion del contenedor (1, 2 ó 3): ");
-        scanf("%d", &identificacion);
+        printf("\nIngrese la identificacion del contenedor (1, 2 o 3): ");
+        scanf("%d", &contenedor.identificacion);
         
-        while (identificacion != 1 && identificacion != 2 && identificacion != 3) // Valido lo ingresado
+        while (contenedor.identificacion != 1 && contenedor.identificacion != 2 && contenedor.identificacion != 3) // Valido lo ingresado
         {
             printf("Lo ingresado es incorrecto, intente nuevamente.");
-            printf("\nIngrese la identificacion del contenedor (1, 2 ó 3): ");
-            scanf("%d", &identificacion);
+            printf("\nIngrese la identificacion del contenedor (1, 2 o 3): ");
+            scanf("%d", &contenedor.identificacion);
         }
         
         printf("\nIngrese la el peso del contenedor en KG (sin letras): ");
-        scanf("%d", &peso); 
-        // No le hice validacion porque no se como hacer para chequear si es un digito o no... perdon-
+        scanf("%d", &contenedor.peso); 
         
-        printf("\nIngrese el puerto de arribo del contenedor (1, 2 ó 3): ");
-        scanf("%d", &puerto);
+        while (contenedor.peso <= 0) {
+            printf("Lo ingresado es incorrecto, intente nuevamente.");
+            printf("\nPeso (kg, debe ser mayor que 0): ");
+            scanf("%d", &contenedor.peso);
+        }
+        // No le hice validacion de si es un digito porque no se como hacer para chequear si es un digito o no en C... perdon-
         
-        while (puerto != 1 && puerto != 2 && puerto != 3) // Valido lo ingresado
+        printf("\nIngrese el puerto de arribo del contenedor (1, 2 o 3): ");
+        scanf("%d", &contenedor.puerto);
+        
+        while (contenedor.puerto != 1 && contenedor.puerto != 2 && contenedor.puerto != 3) // Valido lo ingresado
         {
             printf("Lo ingresado es incorrecto, intente nuevamente.");
-            printf("\nIngrese el puerto de arribo del contenedor (1, 2 ó 3): ");
-            scanf("%d", &puerto);
+            printf("\nIngrese el puerto de arribo del contenedor (1, 2 o 3): ");
+            scanf("%d", &contenedor.puerto);
         }
         
-        pesoT = pesoT + peso;
+        pesoT = pesoT + contenedor.peso;
         
-        if (peso > mayorP) // Actualizo entre se vuelve mas pesado 
+        if (contenedor.peso > mayorP) // Actualizo entre se vuelve mas pesado 
         {
-            mayorP = peso;
-            contP = identificacion;
+            mayorP = contenedor.peso;
+            contP = contenedor.identificacion;
         }
         
-        if(puerto == 1) // Guardo cuantas al puerto 1
+        if(contenedor.puerto == 1) // Guardo cuantas al puerto 1
         {
             cant1++;
         } 
-        else if(puerto == 2) // Guardo cuantas al perto 2
+        else if(contenedor.puerto == 2) // Guardo cuantas al perto 2
         {
             cant2++;
         }
