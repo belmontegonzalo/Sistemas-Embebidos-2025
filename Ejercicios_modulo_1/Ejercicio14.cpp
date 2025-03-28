@@ -1,4 +1,4 @@
-// Dados 50 números enteros, informar el promedio de los mayores que 100 y la suma de los menores que –10.
+// Dados 50 nÃºmeros enteros, informar el promedio de los mayores que 100 y la suma de los menores que â€“10.
 
 #include <stdio.h>
 int prom1 = 0, suma = 0, cant;

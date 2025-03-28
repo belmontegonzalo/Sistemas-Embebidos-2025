@@ -16,10 +16,10 @@ void main(void) {
 
     suma = A + B;
 
-    printf("\n¿En que orden queres que te muestre la resta?\n");
+    printf("\nÂ¿En que orden queres que te muestre la resta?\n");
     printf("1) A - B\n");
     printf("2) B - A\n");
-    printf("Elegi­ 1 o 2: ");
+    printf("ElegiÂ­ 1 o 2: ");
     scanf("%d", &opcion);
 
     if (opcion == 1) 

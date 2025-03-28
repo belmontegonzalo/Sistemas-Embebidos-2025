@@ -1,10 +1,10 @@
-/* Se realiza una inspección en una fábrica de pinturas, y se detectaron 5 infracciones. De cada infracción se tomó nota de los siguientes datos:
-- Tipo de Infracción (1, 2, 3, ó 4)
+/* Se realiza una inspecciÃ³n en una fÃ¡brica de pinturas, y se detectaron 5 infracciones. De cada infracciÃ³n se tomÃ³ nota de los siguientes datos:
+- Tipo de InfracciÃ³n (1, 2, 3, Ã³ 4)
 - Valor de la multa
-- Gravedad de la infracción (‘L’,‘M’, ‘G’)
+- Gravedad de la infracciÃ³n (â€˜Lâ€™,â€˜Mâ€™, â€˜Gâ€™)
 Se pide informar al final del proceso:
- Los valores totales de la multa a pagar de acuerdo al tipo de gravedad.
- La leyenda “Clausurar fábrica” si la cantidad de infracciones 3 y 4 con gravedad “G” sean mayor a 3.*/
+ï‚Ÿ Los valores totales de la multa a pagar de acuerdo al tipo de gravedad.
+ï‚Ÿ La leyenda â€œClausurar fÃ¡bricaâ€ si la cantidad de infracciones 3 y 4 con gravedad â€œGâ€ sean mayor a 3.*/
 
 #include <stdio.h>
 #define INFRA_MAX 5
