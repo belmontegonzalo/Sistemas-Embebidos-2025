@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <iostream>
-using namespace std;
 
 int flow = 1;
 int level= 2;
