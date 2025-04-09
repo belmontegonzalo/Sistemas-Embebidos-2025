@@ -29,7 +29,7 @@ int datos[15][4] = {
     {23,1668685029,pressure,880},
     {74,1421875280,level,862},
     {23,1464026904,flow,352}
-};
+}; // MATRIZ RECORDATA DE DATOS DEL ARCHIVO CSV, de modo ilustrativo y demopstrar el funcionamiento del programa.
 
 int get_highest_value(Sensor sensores[]) {
     int mayorValue;
@@ -43,7 +43,7 @@ int get_highest_value(Sensor sensores[]) {
         }
     }
     return mayorValue;
-}
+} // Consigo el sensor de la matriz con mayor value
 
 int get_lowest_value(Sensor sensores[]) {
     int menorValue;
@@ -57,6 +57,25 @@ int get_lowest_value(Sensor sensores[]) {
         }
     }
     return menorValue;
+} // Consigo el sensor de la matriz con menor value
+
+void get_range_value(Sensor sensores[], int tipo, int rango[2]) {
+    bool primero = true;
+    for (int i = 0; i < 15; i++) {
+        if (sensores[i].value_type == tipo) {
+            if (primero) {
+                rango[0] = sensores[i].value; // menor
+                rango[1] = sensores[i].value; // mayor
+            } else {
+                if (sensores[i].value < rango[0]) {
+                    rango[0] = sensores[i].value;
+                }
+                if (sensores[i].value > rango[1]) {
+                    rango[1] = sensores[i].value;
+                }
+            }
+        }
+    }
 }
 
 float get_average_value(Sensor sensores[]) {
@@ -66,46 +85,47 @@ float get_average_value(Sensor sensores[]) {
             valuePlus = valuePlus + sensores[i].value;
     }
     return (float)valuePlus/15;
-}
+} // Sumo todos los values de todos los sensores y hago un promedio
 
-void find_sensor_by_id(Sensor sensores[], int buscadoID) {
-    bool encontrado_existe = false;
-    printf("---------------------------------------------------\n");
-    
+Sensor find_sensor_by_id(Sensor sensores[], int buscadoID) { 
     for (int i = 0; i < 15; i++) {
         if (sensores[i].sensor_id == buscadoID) {
-            printf("Los valores del sensor solicitado son lo siguientes:\n");
-            printf("ID: %d\n", sensores[i].sensor_id);
-            printf("Timestamp: %d\n", sensores[i].timestamp);
-            
-            if (datos[i][2] == flow) {
-                printf("Tipo de valor: Flow\n");
-            }
-            else if (datos[i][2] == level) {
-                printf("Tipo de valor: Level\n");
-            }
-            else if (datos[i][2] == temperature) {
-                printf("Tipo de valor: Temperature\n");
-            }
-            else {
-                printf("Tipo de valor: Pressure\n");
-            }
-            
-            printf("Valor: %d\n", sensores[i].value);
-            encontrado_existe = true;
+            return sensores[i];
         }
     }
+    return { -1, 0, 0, 0 }; // En caso de que no se haya encontrado un sensor con el ID ingresado, envio un sensor vacio. Y luego lo chequeo en la version MAIN.
     
-    if (encontrado_existe == false) {
-    printf("No se encontró un sensor con el ID %d.\n", buscadoID);
+} // Busco ID y lo mando al main, donde sera mandado a get_sensor_information
+
+void get_sensor_information(Sensor sensor) {
+    printf("---------------------------------------------------\n");
+    printf("Los valores del sensor solicitado son:\n");
+    printf("ID: %d\n", sensor.sensor_id);
+     
+     // CHEQUEO QUE TIPO DE VALUE ES
+    if (sensor.value_type == flow) {
+        printf("Tipo de valor: Flow\n");
     }
-}
+    else if (sensor.value_type == level) {
+        printf("Tipo de valor: Level\n");
+    }
+    else if (sensor.value_type == temperature) {
+        printf("Tipo de valor: Temperature\n");
+    }
+    else {
+        printf("Tipo de valor: Pressure\n");
+    }
+    
+    printf("Timestamp: %d\n", sensor.timestamp);
+    printf("Valor: %d\n", sensor.value);
+} // Recibo los datos del ID leido en find_sensor_by_id y los muestro
 
 int main(void) {
     int filas = (sizeof(datos)/sizeof(datos[0]));
     int columnas = (sizeof(datos[0])/sizeof(datos[0][0]));
     struct Sensor sensores[15];
     
+    // CREO LOS VECTORES
     for (int i = 0; i < filas; i++)
     {
         for (int j = 0; j < columnas; j++)
@@ -125,20 +145,44 @@ int main(void) {
         }
     }
     
-    /*printf("Ingrese el tipo de sensor para obtener el rango de valores:\n");
-    printf("1) Flow\n2) Level\n3) Temperature\n4) Pressure\n");
-    scanf("%d", &tipo);
-    get_range_value();
-    decision = 0;*/
-    
     printf("¿Desea encontrar un sensor especifico en base a su ID?\n1) Si \n2) No\n");
     scanf("%d", &decision);
+    
+    // TODAS LAS FUNCIONES DE ENCONTRAR SENSOR POR ID
     if (decision == 1) {
         printf("Ingrese el valor del ID: ");
         scanf("%d", &buscadoID);
-        find_sensor_by_id(sensores, buscadoID);
+        
+        Sensor encontrado = find_sensor_by_id(sensores, buscadoID);
+
+        if (encontrado.sensor_id != -1) { // En caso de encontrar un sensor.
+            get_sensor_information(encontrado);
+        } else { // En caso de NO encontrar un sensor.
+            printf("No se encontró ningún sensor con el ID %d.\n", buscadoID);
+        }
+        
+        printf("---------------------------------------------------\n");
+        decision = 0;
+    }
+    
+    // TODAS LAS FUNCIONES DE GET_RANGE_VALUE (crisis)
+    printf("¿Desea encontrar el valor maximo y minimo de un tipo de sensor en particular?\n1) Si \n2) No\n");
+    scanf("%d", &decision);
+    
+    if (decision == 1) {
+        printf("Indique que tipo:");
+        printf("\n1) Flow\n2) Level\n3) Temperature\n4) Pressure\n");
+    scanf("%d", &tipo);
+
+    int rango[2];
+    get_range_value(sensores, tipo, rango);
+    printf("---------------------------------------------------\n");
+    printf("El rango de valores para el tipo de sensor %d es: \n", tipo);
+    printf("Valor mínimo: %d\n", rango[0]);
+    printf("Valor máximo: %d\n", rango[1]);
     }
 
+    // Mando a calcular todas las funciones de mayor, menor y promedio y las imprimo
     int mayorValue = get_highest_value(sensores);
     int menorValue = get_lowest_value(sensores);
     float prom = get_average_value(sensores);
